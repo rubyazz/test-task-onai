@@ -45,9 +45,7 @@ def call_llm_api(message):
 
         return response_data["choices"][0]["message"]["content"]
     except KeyError as e:
-        print(
-            f"KeyError: {e} in response: {response_data}"
-        )  # Log the error with response data
+        print(f"KeyError: {e} in response: {response_data}")
         return "Error: Unable to retrieve response from LLM."
     except httpx.HTTPStatusError as e:
         print(f"HTTPError: {e.response.status_code} - {e.response.text}")
