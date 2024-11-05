@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+
 class WebhookSerializer(serializers.Serializer):
     message = serializers.CharField(max_length=5000)
     callback_url = serializers.URLField()

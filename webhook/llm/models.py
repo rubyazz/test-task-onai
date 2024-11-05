@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class MessageHistory(models.Model):
     message = models.TextField()
     response = models.TextField(blank=True, null=True)
