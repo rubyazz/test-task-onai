@@ -33,7 +33,25 @@ def call_llm_api(message):
         "messages": [{"role": "user", "content": message}],
     }
 
-    response = httpx.post(
-        "https://api.openai.com/v1/chat/completions", headers=headers, json=payload
-    )
-    return response.json()["choices"][0]["message"]["content"]
+    try:
+        response = httpx.post(
+            "https://api.openai.com/v1/chat/completions", headers=headers, json=payload
+        )
+        response.raise_for_status()  # Raise an error for HTTP errors
+        response_data = response.json()
+
+        # Debug print
+        print("Response Data:", response_data)
+
+        return response_data["choices"][0]["message"]["content"]
+    except KeyError as e:
+        print(
+            f"KeyError: {e} in response: {response_data}"
+        )  # Log the error with response data
+        return "Error: Unable to retrieve response from LLM."
+    except httpx.HTTPStatusError as e:
+        print(f"HTTPError: {e.response.status_code} - {e.response.text}")
+        return "Error: API request failed."
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
+        return "Error: An unexpected error occurred."
